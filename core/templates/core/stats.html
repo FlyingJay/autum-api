@@ -1,0 +1,920 @@
+<html>
+	<head>
+		<style>
+			body {
+				background-color: #FAE0DE;
+				font-family: 'Trebuchet MS', sans-serif;
+			}
+			h1, h3 {
+				padding-left: 10px;
+			}
+			td {
+				width: 100px;
+				padding: 5px;
+			}
+			.importantNumber {
+				position:  relative;
+				display: inline-block;
+				padding:  20px;
+				border-radius: 20px;
+				border: 1px solid #bd8daa;
+				margin: 0 10px 10px 0;
+				background-color: #FFF;
+			}
+			.bottomRight {
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+			}
+			.importantNumberDesc {
+				font-size: 20px;
+			}
+			.importantNumberValue {
+				font-size: 38px;
+			}
+			.twoImportantNumberValue {
+				padding-top: 10px;
+				font-size: 24px;
+			}
+			.tooltip {
+			  position: relative;
+			  display: inline-block;
+			  border-bottom: 1px dotted black;
+			}
+
+			.tooltip .tooltiptext {
+			  visibility: hidden;
+			  min-width: 200px;
+			  background-color: black;
+			  color: #fff;
+			  text-align: center;
+			  border-radius: 6px;
+			  padding: 5px 0;
+
+			  /* Position the tooltip */
+			  position: absolute;
+			  z-index: 1;
+			}
+
+			.tooltip:hover .tooltiptext {
+			  visibility: visible;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>📲&nbsp;Sign-Ups</h1>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Organic
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_no_referral }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio signups_no_referral signups_pictures 100 %}%</span>
+					<span class="tooltiptext">Chance of a signup being organic.<br/><br/>Organic / Pictures</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				BAs
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_referral }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio signups_referral signups_pictures 100 %}%</span>
+					<span class="tooltiptext">Chance of a signup being a referral.<br/><br/>Referrals / Pictures</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Form Completion
+			</div>
+			<div class="importantNumberValue">
+				{% widthratio signups_pictures signups_phone_verified 100 %}%
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio signups_pictures signups 100 %}%</span>
+					<span class="tooltiptext">Completion rate including phone verification step.</span>
+				</div>
+			</div>
+		</div>
+		<h3>Completion / Step</h3>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Phone
+			</div>
+			<div class="importantNumberValue">
+				{{ signups }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Phone Verified
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_phone_verified }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_phone_not_verified }}</span>
+					<span class="tooltiptext">{% widthratio signups_phone_not_verified signups 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Email
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_email }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_email }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_email signups_phone_verified 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Name
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_name }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_name }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_name signups_email 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Birthday
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_birthday }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_birthday }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_birthday signups_name 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Gender
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_gender }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_gender }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_gender signups_birthday 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber" style="background:#FEE">
+			<div class="importantNumberDesc">
+				Orientation
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_orientation }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				-{{ signups_no_orientation }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Show Me
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_showme }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_showme }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_showme signups_gender 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber" style="background:#FEE">
+			<div class="importantNumberDesc">
+				School
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_school }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				-{{ signups_no_school }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Pictures
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_pictures }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				<div class="tooltip">
+					<span>-{{ signups_no_pictures }}</span>
+					<span class="tooltiptext">{% widthratio signups_no_pictures signups_showme 100 %}% attrition at this step.</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber" style="background:#FEE">
+			<div class="importantNumberDesc">
+				Interests
+			</div>
+			<div class="importantNumberValue">
+				{{ signups_interests }}
+			</div>
+			<div class="bottomRight" style="color:red;">
+				-{{ signups_no_interests }}
+			</div>
+		</div>
+		<h1>😊&nbsp;Accounts</h1>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Created Accounts
+			</div>
+			<div class="importantNumberValue">
+				{{ users }}
+			</div>
+			<div class="bottomRight">
+				<a href="{{API_BASE_URL}}/map" style="font-size:26px;text-decoration:none;">🌎</a>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Deleted Accounts
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted }}
+			</div>
+			<div class="bottomRight">
+				<a href="{{API_BASE_URL}}/map/deleted" style="font-size:26px;text-decoration:none;">🌎</a>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Currently Registered
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Swipeable Users
+			</div>
+			<div class="importantNumberValue">
+				{{ users_swipeable }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_swipeable users_registered 100 %}%</span>
+					<span class="tooltiptext">Percentage of non-hidden registered profiles.<br/><br/>Swipeable Users / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Waiting List
+			</div>
+			<div class="importantNumberValue">
+				{{ users_waiting_list }}
+			</div>
+			<div class="bottomRight">
+				<a href="{{API_BASE_URL}}/map/waiting-list" style="font-size:26px;text-decoration:none;">🌎</a>
+			</div>
+		</div>
+		<h3>Activity</h3>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Online Now
+			</div>
+			<div class="importantNumberValue">
+				{{ users_online_now }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_online_now users_registered 100 %}%</span>
+					<span class="tooltiptext">Currently Active Users<br/>(last 15 mins)<br/><br/>Online Now / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Last Hour
+			</div>
+			<div class="importantNumberValue">
+				{{ users_online_1h }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_online_1h users_registered 100 %}%</span>
+					<span class="tooltiptext">Hourly Active Users<br/><br/>Last Hour / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Last Day
+			</div>
+			<div class="importantNumberValue">
+				{{ users_online_24h }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_online_24h users_registered 100 %}%</span>
+					<span class="tooltiptext">Daily Active Users<br/><br/>Daily Users / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Last Week
+			</div>
+			<div class="importantNumberValue">
+				{{ users_online_7d }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_online_7d users_registered 100 %}%</span>
+					<span class="tooltiptext">Weekly Active Users<br/><br/>Last Week / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Last Month
+			</div>
+			<div class="importantNumberValue">
+				{{ users_online_30d }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_online_30d users_registered 100 %}%</span>
+					<span class="tooltiptext">Monthly Active Users<br/><br/>Monthly Users / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<br/>
+		<div id="container" style="width: 500px;display:inline-block;">
+			<canvas id="bar-online-days"></canvas>
+		</div>
+		<div id="container" style="width: 500px;display:inline-block;">
+			<canvas id="bar-online-hours"></canvas>
+		</div>
+		<br/>
+		<br/>
+		<h3>Profile Completeness</h3>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Bio
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_bio users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_bio users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Job
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_job users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_job users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Company
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_company users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_company users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				School
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_school users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_school users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Orientation
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_orientation users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_orientation users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Height
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_height users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_height users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Interests
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_interests users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_interests users_registered_female 100 %}%
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Experiences
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{% widthratio users_registered_male_experiences users_registered_male 100 %}%
+				<br/>
+				♀️&nbsp;{% widthratio users_registered_female_experiences users_registered_female 100 %}%
+			</div>
+		</div>
+		<br/>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Avg. Picture Count
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{{ users_registered_male_pictures_avg|floatformat:2 }}
+				<br/>
+				♀️&nbsp;{{ users_registered_female_pictures_avg|floatformat:2 }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Avg. Interest Count
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{{ users_registered_male_interests_avg|floatformat:2 }}
+				<br/>
+				♀️&nbsp;{{ users_registered_female_interests_avg|floatformat:2 }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Avg. Experience Count
+			</div>
+			<div class="twoImportantNumberValue">
+				♂️&nbsp;{{ users_registered_male_experiences_avg|floatformat:2 }}
+				<br/>
+				♀️&nbsp;{{ users_registered_female_experiences_avg|floatformat:2 }}
+			</div>
+		</div>
+		<h1>🔥&nbsp;Matches</h1>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Currently Matched
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered_active_matches }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_registered_active_matches users_registered 100 %}%</span>
+					<span class="tooltiptext">Chance that a given user has active matches. <br/><br/>Currently Matched / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Currently Fully Matched
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered_active_matches_full }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_registered_active_matches_full users_registered 100 %}%</span>
+					<span class="tooltiptext">Chance that a given user is at their match limit. <br/><br/>Currently Fully Matched / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Avg. Current Matches
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered_active_matches_avg|floatformat:2 }}
+			</div>
+		</div>
+		<h3>Registered</h3>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Users Matched
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered_matched }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_registered_matched users_registered 100 %}%</span>
+					<span class="tooltiptext">Chance that a currently registered user has matched. <br/><br/>Users Matched (Registered) / Currently Registered</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Total Matches
+			</div>
+			<div class="importantNumberValue">
+				{{ users_registered_matched_matches_sum }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Total Swipes
+			</div>
+			<div class="importantNumberValue">
+				{{ total_swipes_registered_users }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Swipes / Match
+			</div>
+			<div class="importantNumberValue">
+				{% widthratio total_swipes_registered_users users_registered_matched_matches_sum 1 %}
+			</div>
+		</div>
+		<br/>
+		<h3>All-Time</h3>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Users Matched
+			</div>
+			<div class="importantNumberValue">
+				{{ users_matched }}
+			</div>
+			<div class="bottomRight">
+				<div class="tooltip">
+					<span>{% widthratio users_matched users 100 %}%</span>
+					<span class="tooltiptext">Historical chance of any new user to match with someone.<br/><br/>Users Matched (All-Time) / Signups</span>
+				</div>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Total Matches
+			</div>
+			<div class="importantNumberValue">
+				{{ users_matched_matches_sum }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Total Swipes
+			</div>
+			<div class="importantNumberValue">
+				{{ total_swipes }}
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Swipes / Match
+			</div>
+			<div class="importantNumberValue">
+				{% widthratio total_swipes users_matched_matches_sum 1 %}
+			</div>
+		</div>
+		<h1>💸&nbsp;Churn</h1>
+		<!--
+		<div id="container2" style="width: 600px;display:inline-block;">
+			<canvas id="line-churn"></canvas>
+		</div>
+		<div id="container3" style="width: 600px;display:inline-block;">
+			<canvas id="line-churn-sources"></canvas>
+		</div>
+		<br/>
+		<br/>
+		-->
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Bugs
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_bugs }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_bugs users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Quality
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_quality }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_quality users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Quantity
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_quantity }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_quantity users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Another On-App
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_another_onapp }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_another_onapp users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Another Off-App
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_another_offapp }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_another_offapp users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				Other
+			</div>
+			<div class="importantNumberValue">
+				{{ users_deleted_other }}
+			</div>
+			<div class="bottomRight">
+				<span>{% widthratio users_deleted_other users_deleted 100 %}%</span>
+			</div>
+		</div>
+		<!--
+		<br/>
+		<br/>
+		<div id="container" style="width: 500px;">
+			<canvas id="pie-churn"></canvas>
+		</div>
+		<br/>
+		<br/>
+		-->
+		<h1>🎉&nbsp;Fun Stuff</h1>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				🔥&nbsp;Most Matches
+			</div>
+			<div class="importantNumberValue">
+				<table style="padding:5px 0 0 5px;">
+					<tr>
+						<td>
+							<b>Name</b>
+						</td>
+						<td>
+							<b>Match Count</b>
+						</td>
+					</tr>
+					{% for user in power_users %}
+						<tr>
+							<td>
+								{{user.first_name}}
+							</td>
+							<td>
+								{{user.historical_match_count}}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				💖&nbsp;Recently Matched
+			</div>
+			<div class="importantNumberValue">
+				<table style="padding:5px 0 0 5px;">
+					<tr>
+						<td>
+							<b>Name</b>
+						</td>
+						<td>
+							<b>Name</b>
+						</td>
+					</tr>
+					{% for like in recent_likes %}
+						<tr>
+							<td>
+								{{like.liker.first_name}}
+							</td>
+							<td>
+								{{like.subject.first_name}}
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div class="importantNumber">
+			<div class="importantNumberDesc">
+				💔&nbsp;Recently Ended
+			</div>
+			<div class="importantNumberValue">
+				<table style="padding:5px 0 0 5px;">
+					<tr>
+						<td>
+							<b>Name</b>
+						</td>
+						<td>
+							<b>Name</b>
+						</td>
+						<td>
+							<b>Reason</b>
+						</td>
+					</tr>
+					{% for like in ended_likes %}
+						<tr>
+							<td>
+								{{like.liker.first_name}}
+							</td>
+							<td>
+								{{like.subject.first_name}}
+							</td>
+							<td>
+								<!--like.is_ended_reason_text-->
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+		<script>
+			/*
+			//Pie Chart
+			var config_pie_churn = {
+			  type: 'pie',
+			  data: {
+			    datasets: [{
+			      data: {{ data|safe }},
+			      backgroundColor: [
+			        '#77b41b', '#d8d8d8', '#bd8daa', '#b29998', '#eed73f', '#fd5722'
+			      ],
+			      label: 'Churn'
+			    }],
+			    labels: {{ labels|safe }}
+			  },
+			  options: {
+			    responsive: true
+			  }
+			};
+
+			window.onload = function() {
+
+			};
+			*/
+			//Line Chart
+
+			var config_bar_online_hours = {
+			  type: 'bar',
+			  data: {
+			    datasets: [{
+			      data: {{ users_registered_online_hours|safe }},
+			      backgroundColor: [
+			        '#77b41b', '#d8d8d8', '#bd8daa', '#b29998', '#eed73f', '#fd5722',
+			        '#09B5F7', '#79E4BC', '#7EE36E', '#EC7432', '#49BFE3', '#DD84DC',
+			        '#A1B719', '#6CC1C9', '#4FCB4B', '#A45076', '#C7AE7D', '#F15994',
+			        '#E7C329', '#FF6A6E', '#6189C6', '#EE8373', '#8EC6C5', '#E56427',
+			      ],
+			      label: 'Last Visit (hour)'
+			    }],
+			    labels: {{ users_registered_online_hours_labels|safe }}
+			  },
+			  options: {
+			    responsive: true
+			  }
+			};
+
+			var config_bar_online_days = {
+			  type: 'bar',
+			  data: {
+			    datasets: [{
+			      data: {{ users_registered_online_days|safe }},
+			      backgroundColor: [
+			        '#77b41b', '#d8d8d8', '#bd8daa', '#b29998', '#eed73f', '#fd5722',
+			        '#09B5F7', '#79E4BC', '#7EE36E', '#EC7432', '#49BFE3', '#DD84DC',
+			        '#A1B719', '#6CC1C9', '#4FCB4B', '#A45076', '#C7AE7D', '#F15994',
+			        '#E7C329', '#FF6A6E', '#6189C6', '#EE8373', '#8EC6C5', '#E56427',
+			      ],
+			      label: 'Last Visit (day)'
+			    }],
+			    labels: {{ users_registered_online_days_labels|safe }}
+			  },
+			  options: {
+			    responsive: true
+			  }
+			};
+
+			/*
+			//Multi-Line Chart 
+			var config_line_churn_sources = {
+			  type: 'line',
+			  data: {
+			    datasets: [{
+			      label: 'Bugs',
+			      data: {{ deleted_bugs_data|safe }},
+			      borderColor: '#77b41b',
+			      fill: 'none'
+			    },{
+			      label: 'Quality',
+			      data: {{ deleted_quality_data|safe }},
+			      borderColor: '#d8d8d8',
+			      fill: 'none'
+			    },{
+			      label: 'Quanity',
+			      data: {{ deleted_quantity_data|safe }},
+			      borderColor: '#bd8daa',
+			      fill: 'none'
+			    },{
+			      label: 'Another (On-App)',
+			      data: {{ deleted_another_onapp_data|safe }},
+			      borderColor: '#b29998',
+			      fill: 'none'
+			    },{
+			      label: 'Another (Off-App)',
+			      data: {{ deleted_another_offapp_data|safe }},
+			      borderColor: '#eed73f',
+			      fill: 'none'
+			    },{
+			      label: 'Other',
+			      data: {{ deleted_other_data|safe }},
+			      borderColor: '#fd5722',
+			      fill: 'none'
+			    }],
+			    labels: {{ deleted_labels|safe }}
+			  },
+			  options: {
+			    responsive: true,
+		        title: {
+	              display: true,
+	              text: 'By Deleted Reason'
+	            }
+			  }
+			};
+			*/
+
+			//Initialize Charts
+			window.onload = function() {
+				/*
+			  var ctx = document.getElementById('pie-churn').getContext('2d');
+			  window.myPie = new Chart(ctx, config_pie_churn);*/
+
+			  var ctx2 = document.getElementById('bar-online-hours').getContext('2d');
+			  window.myBarHours = new Chart(ctx2, config_bar_online_hours);
+
+			  var ctx2 = document.getElementById('bar-online-days').getContext('2d');
+			  window.myBarDays = new Chart(ctx2, config_bar_online_days);
+			  /*
+			  var ctx3 = document.getElementById('line-churn-sources').getContext('2d');
+			  window.myMultiLine = new Chart(ctx3, config_line_churn_sources);*/
+			};
+		</script>
+	</body>
+</html>

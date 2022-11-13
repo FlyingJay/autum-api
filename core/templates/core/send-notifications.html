@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<form action="" method="post">
+  {% csrf_token %}
+<p>
+You are sending a message to the following accounts:
+</p>  
+  {% for profile in profiles %}
+    <p>
+      {{ profile }}
+    </p>
+    <input type="hidden" name="_selected_action" value="{{ profile.pk }}" />
+  {% endfor %}
+
+  <label for="title">Title:&nbsp;&nbsp;</label>
+  <input type="text" name="title" maxlength="50" size="50"/>
+  <br/>
+  <label for="body">Body:&nbsp;</label>
+  <input type="text" name="body" maxlength="100" size="100"/>
+  <br/>
+  <input type="hidden" name="action" value="send_notifications" />
+  <input type="submit" name="send" value="Send"/>
+</form>
+{% endblock %}

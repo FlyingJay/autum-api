@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        position: relative;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+   		
+   		.route {
+   			background: #FFF;
+   			position: fixed;
+   			top: 4vmin;
+   			right: 4vmin;
+   			color: #000;
+   			padding: 2vmin;
+   			font-size: 4vmin;
+   			text-align: center;	
+   			border-radius: 1vmin;
+   		}
+
+   		.route span {
+ 				font-size: 3vmin;
+ 			}
+   		
+   		#route {
+   			padding:1vmin;
+   			text-align:left;
+   			font-size:2.5vmin;
+   		}
+   		
+   		#failed {
+   			padding:1vmin;
+   			text-align:left;
+   			font-size:2.5vmin;
+   			border-top: 1px solid #DDD;
+   		}
+
+   		button {
+   			display: none!important;
+   		}
+
+ 			@media (max-width: 768px) {
+ 				.route {
+   				font-size: 2.25vmin;
+ 					top: 1vmin;
+ 					right: 1vmin;
+ 				}
+ 			}
+    </style>
+  </head>
+  <body>
+  	<div id="map"></div>
+
+  	<script>
+  		function getUrlVars() {
+		    var vars = {};
+		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		        vars[key] = value;
+		    });
+		    return vars;
+			}
+
+			var error = getUrlVars()["error"];
+			if(error == '') {
+				alert("")
+			}
+  	</script>
+
+  	<script>
+			function sleep(ms) {
+			  return new Promise(resolve => setTimeout(resolve, ms));
+			}
+			async function asyncForEach(array, callback) {
+			  for (let index = 0; index < array.length; index++) {
+			    await callback(array[index], index, array);
+			  }
+			}
+
+  		var route = []
+  		var infowindows = []
+
+			var map;
+      async function initMap() {
+      	var home_name = "Autum"
+        var home_location = {lat: 43.6609225143841, lng: -79.39595138526022}
+        var map_center = {lat: 43.6609225143841, lng: -79.39595138526022}
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: map_center,
+          zoom: 11
+        }); 
+
+        var home = new google.maps.Marker({ 
+        	map:map,
+        	position: home_location, 
+			    icon: { 
+			    	url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+			    },
+			    label: {
+			    	text: home_name,
+				    color: '#313131',
+				    fontSize: "3vmin",
+				    fontWeight: 'bold'
+				  }
+			  })
+
+	  		var profiles = JSON.parse("{{profiles}}".split("&quot;").join('"'))
+
+				await asyncForEach(profiles, async (profile) => {
+			    await sleep(250);
+          var marker = new google.maps.Marker({
+            map: map,
+            position: profile.location/*,
+            label: {
+						    text: ""+order.first_name,
+						    color: '#313131',
+						    fontSize: "2.25vmin",
+						    fontWeight: 'bold'
+						  }*/
+          });
+			  });
+      }
+      
+  	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&callback=initMap"></script>
+  </body>
+</html>

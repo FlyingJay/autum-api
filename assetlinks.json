@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "com.autum.dating",
+               "sha256_cert_fingerprints": ["6D:BF:7E:81:D8:BB:36:18:06:CD:D4:F4:88:EB:A6:5B:D9:60:9B:FD:53:43:B2:84:B0:4E:8D:C0:C4:0F:42:88"] }
+}]
